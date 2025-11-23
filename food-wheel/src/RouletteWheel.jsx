@@ -10,6 +10,14 @@ export default function RouletteWheel({ items, spinning, onSpin, rotation}) {
   const numItems = items.length;
   const anglePerSegment = 360 / numItems;
 
+  const dots = Array.from({ length: 40 }, (_, i) => {
+  const angle = (i / 40) * 2 * Math.PI;
+  return {
+    x: 50 + 48 * Math.cos(angle), // percentage positions
+    y: 50 + 48 * Math.sin(angle),
+  };
+});
+
 
   const createSegmentPath = (index) => {
     const startAngle = (index * anglePerSegment - 90) * (Math.PI / 180);
@@ -34,86 +42,84 @@ export default function RouletteWheel({ items, spinning, onSpin, rotation}) {
   };
 
   return (
-    <div className="relative flex flex-col items-center">
-      {/* Outer ring */}
-      <div 
-        className="absolute w-80 h-80 rounded-full bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600 shadow-xl"
-        style={{ top: '-10px' }}
-      >
-        {[...Array(24)].map((_, i) => {
-          const angle = (i * 15) * (Math.PI / 180);
-          const x = 160 + 148 * Math.cos(angle);
-          const y = 160 + 148 * Math.sin(angle);
-          return (
-            <div
-              key={i}
-              className="absolute w-3 h-3 rounded-full bg-white shadow-inner"
-              style={{ left: `${x - 6}px`, top: `${y - 6}px` }}
-            />
-          );
-        })}
-      </div>
+   <div className="relative flex flex-col items-center w-[80vw] max-w-[350px] sm:max-w-[420px]">
 
-      {/* Wheel */}
-      <svg
-        width="300"
-        height="300"
-        className="relative z-10"
-        style={{
-          transform: `rotate(${rotation}deg)`,
-          transition: spinning ? "transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)" : "none",
-        }}
-      >
-        {items.map((item, index) => {
-          const textPos = getTextPosition(index);
-          return (
-            <g key={index}>
-              <path
-                d={createSegmentPath(index)}
-                fill={COLORS[index % COLORS.length]}
-                stroke="#fff"
-                strokeWidth="2"
-              />
-              <text
-                x={textPos.x}
-                y={textPos.y}
-                fill="#fff"
-                fontSize="11"
-                fontWeight="bold"
-                textAnchor="middle"
-                dominantBaseline="middle"
-                transform={`rotate(${textPos.rotation}, ${textPos.x}, ${textPos.y})`}
-              >
-                {item}
-              </text>
-            </g>
-          );
-        })}
 
-        {/* Center circle */}
-        <circle cx="150" cy="150" r="25" fill="#ffd700" stroke="#fff" strokeWidth="3"/>
-      </svg>
 
-      {/* Pointer */}
-      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-2 z-20">
-        <div 
-          className="w-0 h-0 border-l-8 border-r-8 border-l-transparent border-r-transparent border-t-red-600"
-          style={{ borderTopWidth: '24px' }}
-        />
-      </div>
+  {/* 🎡 FORTUNE WHEEL */}
+  <svg
+    viewBox="0 0 300 300"
+    className="relative z-20 w-full h-auto drop-shadow-[0_0_25px_rgba(0,255,80,0.6)]"
+    style={{
+      transform: `rotate(${rotation}deg)`,
+      transition: spinning
+        ? "transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)"
+        : "none",
+    }}
+  >
+    {items.map((item, index) => {
+      const textPos = getTextPosition(index);
+      return (
+        <g key={index}>
+          <path
+            d={createSegmentPath(index)}
+            fill={COLORS[index % COLORS.length]}
+            stroke="#222"
+            strokeWidth="2"
+            className="drop-shadow-[0_0_8px_rgba(0,0,0,0.4)]"
+          />
 
-      {/* Spin button */}
-            <button
-        onClick={onSpin}
-        disabled={spinning}
-        className={`mt-8 px-16 py-3 text-lg font-bold text-white rounded-full 
-          transition-all duration-200 shadow-[0_0_20px_rgba(0,255,0,0.5)] 
-          bg-linear-to-b from-[#5CFF8A] to-[#0FBF41] 
-          hover:brightness-110 active:scale-95 glow-green
-          ${spinning ? "opacity-60 cursor-not-allowed" : ""}`}
-      >
-        {spinning ? "Spinning..." : "SPIN!"}
-      </button>
-    </div>
+          <text
+            x={textPos.x}
+            y={textPos.y}
+            fill="#fff"
+            fontSize="12"
+            fontWeight="bold"
+            textAnchor="middle"
+            dominantBaseline="middle"
+            transform={`rotate(${textPos.rotation}, ${textPos.x}, ${textPos.y})`}
+            className="drop-shadow-[1px_1px_2px_black]"
+          >
+            {item}
+          </text>
+        </g>
+      );
+    })}
+
+  
+
+    <defs>
+      <radialGradient id="centerGradient">
+        <stop offset="0%" stopColor="#00ff88" />
+        <stop offset="100%" stopColor="#009944" />
+      </radialGradient>
+    </defs>
+  </svg>
+
+  {/* 🔻 POINTER */}
+  <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-30">
+    <div className="
+      w-0 h-0 
+      border-l-[14px] border-r-[14px] 
+      border-l-transparent border-r-transparent 
+      border-t-[28px] border-t-red-600
+      drop-shadow-[0_4px_6px_rgba(0,0,0,0.3)]"
+    />
+  </div>
+
+  {/* 🎯 SPIN BUTTON */}
+  <button
+    onClick={onSpin}
+    disabled={spinning}
+    className={`mt-8 px-10 py-2 sm:px-16 sm:py-3 text-base sm:text-lg font-bold text-white rounded-full 
+      transition-all duration-200 shadow-[0_0_20px_rgba(0,255,0,0.5)] 
+      bg-gradient-to-b from-[#5CFF8A] to-[#0FBF41] 
+      hover:brightness-110 active:scale-95
+      ${spinning ? "opacity-60 cursor-not-allowed" : ""}`}
+  >
+    {spinning ? "Spinning..." : "SPIN!"}
+  </button>
+</div>
+
   );
 }

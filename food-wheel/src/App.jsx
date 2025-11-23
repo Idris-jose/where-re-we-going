@@ -1,5 +1,6 @@
 import { useState } from "react";
 import RouletteWheel from "./RouletteWheel.jsx";
+import Fireworks from "react-canvas-confetti/dist/presets/fireworks";
 
 export default function App() {
   const [selectedRestaurant, setSelectedRestaurant] = useState("");
@@ -106,11 +107,11 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-black flex flex-col items-center py-12 px-4">
+    <div className="min-h-screen bg-black flex flex-col items-center py-8 px-4 sm:py-12 sm:px-8 lg:px-16">
       {/* Header */}
-      <div className="text-center mb-10">
-        <h1 className="text-3xl font-bold text-white mb-2">Food Roulette</h1>
-        <p className="text-gray-400">Can't decide? Let the wheel choose!</p>
+      <div className="text-center mb-8 sm:mb-10">
+        <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">Food Roulette</h1>
+        <p className="text-gray-400 text-sm sm:text-base">Can't decide? Let the wheel choose!</p>
       </div>
 
     {showWheel == true && (
@@ -128,26 +129,28 @@ export default function App() {
       
 
      {selectedRestaurant && choice === "" && (
-  <div className="mt-10 text-center text-white">
+  <div className="mt-8 sm:mt-10 text-center text-white px-2 sm:px-0">
+
+
 
     {/* TITLE */}
-    <h1 className="text-4xl font-extrabold tracking-wide drop-shadow-[0_0_10px_rgba(255,255,255,0.4)]">
+    <h1 className="text-3xl sm:text-4xl font-extrabold tracking-wide drop-shadow-[0_0_10px_rgba(255,255,255,0.4)]">
       YOU'RE EATING AT:
     </h1>
 
     {/* RESTAURANT NAME (Neon Glow) */}
-    <p className="text-5xl font-extrabold mt-3 
+    <p className="text-4xl sm:text-5xl font-extrabold mt-2 sm:mt-3
        text-[#6CFF90] drop-shadow-[0_0_15px_rgba(0,255,120,0.9)]">
       {selectedRestaurant}
     </p>
 
     {/* BUTTONS */}
-    <div className="flex justify-center gap-6 mt-8">
+    <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6 mt-6 sm:mt-8 px-8 sm:px-0">
 
       {/* YES BUTTON */}
       <button
         onClick={handleYes}
-        className="px-6 py-3 rounded-full text-lg font-semibold flex items-center gap-2
+        className="px-6 py-3 rounded-full text-base sm:text-lg font-semibold flex items-center justify-center gap-2
         bg-gradient-to-b from-[#5CFF8A] to-[#0FBF41]
         shadow-[0_0_20px_rgba(0,255,120,0.6)]
         hover:brightness-110 active:scale-95 transition-all"
@@ -158,7 +161,7 @@ export default function App() {
       {/* NO BUTTON */}
       <button
         onClick={handleNo}
-        className="px-6 py-3 rounded-full text-lg font-semibold flex items-center gap-2
+        className="px-6 py-3 rounded-full text-base sm:text-lg font-semibold flex items-center justify-center gap-2
         bg-gradient-to-b from-[#FF6B6B] to-[#D62828]
         shadow-[0_0_20px_rgba(255,90,90,0.5)]
         hover:brightness-110 active:scale-95 transition-all"
@@ -169,6 +172,7 @@ export default function App() {
     </div>
   </div>
 )}
+
 
 
 

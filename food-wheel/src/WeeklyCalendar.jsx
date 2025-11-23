@@ -40,13 +40,13 @@ export default function WeeklyCalendar({ history }) {
   }
 
   return (
-    <div style={{ marginTop: 40, width: "100%", maxWidth: 600 }}>
+    <div className="mt-10 w-full max-w-lg mx-auto px-2 sm:px-0">
       <h2 className="text-xl font-semibold mb-2">Weekly Food History</h2>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <div className="flex justify-between">
         {daysOfWeek.map((day, idx) => (
-          <div key={idx} style={{ flex: 1, textAlign: "center", padding: 10, border: "1px solid #ccc", borderRadius: 8, margin: 2 }}>
-            <div style={{ fontWeight: "bold" }}>{day}</div>
-            <div style={{ fontSize: 12, color: "#666" }}>
+          <div key={idx} className="flex-1 text-center p-2 border border-gray-300 rounded-lg mx-0.5">
+            <div className="font-bold">{day}</div>
+            <div className="text-xs text-gray-600">
               {maxByDay[idx].join(", ")}
             </div>
           </div>
